@@ -21,7 +21,7 @@ app.use(cors({
 }))
 app.use('/patient', userRoutes)
 app.use('/doctor', doctorRoutes)
-// app.use('/admin', adminRoutes)
+app.use('/admin', adminRoutes)
 mongoose.connect(uri)
 .then(()=>{
     console.log('connected');

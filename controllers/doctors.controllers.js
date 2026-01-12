@@ -5,12 +5,6 @@ const patientModel = require('../models/user.models')
 
 const getAuth = (req, res) => {
   const { email, password } = req.body
-
-
-  const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-  if (!strongRegex.test(password)) {
-    return res.status(400).send('weak password :must contain uppercase, lowercase , number anf symbol')
-  }
   // usercheck
   userModel.findOne({ email })
     .then((existingUser) => {
@@ -73,14 +67,15 @@ const getLogin = (req, res) => {
     })
 }
 
-// New: return all patients (for doctors frontend)
-const getAllPatients = (req, res) => {
-  patientModel.find().select('-__v')
-    .then(patients => res.json({ patients }))
-    .catch(err => {
-      console.error('getAllPatients error', err)
-      res.status(500).json({ error: 'internal server error' })
-    })
-}
+
+const getAllPatients = async (req, res) => {
+  try {
+    const patients = await patientModel.find({}).lean().exec();
+    res.status(200).json(patients); // You MUST send the data back
+  } catch (err) {
+    console.error('getAllPatients error', err);
+    res.status(500).json({ error: 'internal server error' });
+  }
+};
 
 module.exports = { getAuth, getLogin, getAllPatients }
