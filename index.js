@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const dotenv = require('dotenv')
 dotenv.config()
-const port =3700
+const port =process.env.port
 const ejs = require('ejs')
 app.set('view engine', 'ejs')
 const mongoose = require('mongoose')
