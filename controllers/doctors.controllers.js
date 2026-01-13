@@ -4,7 +4,7 @@ const userModel = require('../models/doctor.models')
 const patientModel = require('../models/user.models')
 
 const getAuth = (req, res) => {
-  const { email, password } = req.body
+  const {name, email, password } = req.body
   // usercheck
   userModel.findOne({ email })
     .then((existingUser) => {
@@ -17,6 +17,7 @@ const getAuth = (req, res) => {
       if (!hashedPassword) return;
 
       const newUser = new userModel({
+        name,
         email,
         password: hashedPassword
 
